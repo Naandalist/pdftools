@@ -9,10 +9,6 @@
   Everything runs on your phone.
 </p>
 
-<p align="center">
-  <a href="https://sammyzi.github.io/pdf-tools/">Privacy policy</a>
-</p>
-
 ## What it does
 
 - **Scan** documents, books, ID cards and whiteboards. Scans are searchable.
