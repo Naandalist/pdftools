@@ -2,6 +2,7 @@ package com.naandalist.pdf_tools
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import com.google.android.gms.ads.MobileAds
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -170,6 +171,7 @@ private fun Root() {
   val controller = rememberNavController()
   val nav = remember { Nav(controller) }
   var agreed by remember { mutableStateOf(Terms.accepted()) } // read before the first frame: no flash of the terms
+  LaunchedEffect(Unit) { MobileAds.initialize(appContext) }
   DisposableEffect(nav) {
     Viewer.open = { path, name -> nav.viewer(path, name) }
     onDispose { Viewer.open = null }

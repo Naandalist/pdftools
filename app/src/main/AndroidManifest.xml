@@ -77,5 +77,10 @@
       android:grantUriPermissions="true">
       <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
     </provider>
+
+    <!-- Google Mobile Ads SDK app ID. -->
+    <meta-data
+      android:name="com.google.android.gms.ads.APPLICATION_ID"
+      android:value="ca-app-pub-1316297860279927~1323938842" />
   </application>
 </manifest>

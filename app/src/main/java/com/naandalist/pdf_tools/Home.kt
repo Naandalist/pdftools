@@ -71,6 +71,7 @@ fun Home() {
     if (!searching) {
       Stagger(0) { Hero(files) { nav.scan() } }
       if (files.isNotEmpty()) Stagger(1) { RecentPanel(files.take(3)) { nav.show(Tab.Files) } }
+      Stagger(2) { NativeAdView() }
       Row(
         Modifier.padding(top = 22.dp).horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -95,7 +96,7 @@ fun Home() {
     // Pinned tools first, in the order they were pinned (hold any tool, or use the pin on its screen).
     val pinned = Pins.ids.mapNotNull { toolById(it) }
     if (!searching && section == -1 && pinned.isNotEmpty()) {
-      Stagger(2) {
+      Stagger(3) {
         Column {
           GroupLabel("Pinned · ${pinned.size}")
           ToolGrid(pinned, shared = false) { nav.tool(it.id) } // the section below owns the flying art
@@ -107,7 +108,7 @@ fun Home() {
       if (!searching && section != -1 && section != si) return@forEachIndexed
       val items = tools.filter { it.section == si && (searching || it.id != "scan") }
       if (items.isEmpty()) return@forEachIndexed
-      Stagger(si + 3) {
+      Stagger(si + 4) {
         Column {
           GroupLabel("$name · ${items.size}")
           ToolGrid(items) { nav.tool(it.id) }

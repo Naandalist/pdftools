@@ -116,6 +116,9 @@ dependencies {
   // Google Drive sync: Identity AuthorizationClient for a drive.file token.
   implementation("com.google.android.gms:play-services-auth:22.0.0")
 
+  // Google Mobile Ads SDK for AdMob.
+  implementation("com.google.android.gms:play-services-ads:23.0.0")
+
   testImplementation("junit:junit:4.13.2")
   androidTestImplementation("androidx.test:runner:1.7.0")
   androidTestImplementation("androidx.test.ext:junit:1.3.0")
