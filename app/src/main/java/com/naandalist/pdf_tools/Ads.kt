@@ -1,90 +1,76 @@
 package com.naandalist.pdf_tools
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdView as NativeAdViewAndroid
+import com.google.android.gms.ads.nativead.NativeAdView
 
 const val ADMOB_NATIVE_AD_UNIT = "ca-app-pub-1316297860279927/3715278401"
 
+// No fixed height: AdMob rejects any asset laid out past the NativeAdView's bounds, so the card wraps its content.
 @Composable
-fun NativeAdView(modifier: Modifier = Modifier) {
-  val palette = LocalPalette.current
-  val shape = RoundedCornerShape(Radius.group)
-  Box(
-    modifier
-      .fillMaxWidth()
-      .height(200.dp)
-      .clip(shape)
-      .background(palette.surface, shape)
-  ) {
-    AndroidView(
-      factory = { context ->
-        val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.ad_native, null) as NativeAdViewAndroid
-      },
-      modifier = Modifier.fillMaxWidth(),
-      update = { adView ->
-        applyThemeColors(adView, palette)
-        val adRequest = AdRequest.Builder().build()
-        val adLoader = com.google.android.gms.ads.AdLoader.Builder(appContext, ADMOB_NATIVE_AD_UNIT)
-          .forNativeAd { nativeAd ->
-            populateNativeAdView(nativeAd, adView, palette)
-          }
-          .withAdListener(object : com.google.android.gms.ads.AdListener() {
-            override fun onAdFailedToLoad(p0: com.google.android.gms.ads.LoadAdError) {
-              super.onAdFailedToLoad(p0)
-            }
-          })
-          .build()
-        adLoader.loadAd(adRequest)
-      }
-    )
+fun NativeAdCard(modifier: Modifier = Modifier) {
+  var ad by remember { mutableStateOf<NativeAd?>(null) }
+  DisposableEffect(Unit) {
+    var disposed = false
+    AdLoader.Builder(appContext, ADMOB_NATIVE_AD_UNIT)
+      .forNativeAd { if (disposed) it.destroy() else ad = it }
+      .build()
+      .loadAd(AdRequest.Builder().build())
+    onDispose { disposed = true; ad?.destroy() }
   }
+  val loaded = ad ?: return
+  val palette = c
+  AndroidView(
+    factory = { ctx -> LayoutInflater.from(ctx).inflate(R.layout.ad_native, null) as NativeAdView },
+    modifier = modifier.fillMaxWidth().background(palette.surface, RoundedCornerShape(Radius.group)),
+    update = { bind(it, loaded, palette) },
+  )
 }
 
-private fun applyThemeColors(adView: NativeAdViewAndroid, palette: Palette) {
-  adView.setBackgroundColor(palette.surface.hashCode())
+private fun bind(view: NativeAdView, ad: NativeAd, p: Palette) {
+  val label = view.findViewById<TextView>(R.id.ad_label)
+  val headline = view.findViewById<TextView>(R.id.ad_headline)
+  val body = view.findViewById<TextView>(R.id.ad_body)
+  val icon = view.findViewById<ImageView>(R.id.ad_app_icon)
+  val cta = view.findViewById<Button>(R.id.ad_call_to_action)
 
-  val labelView = adView.findViewById<android.widget.TextView>(R.id.ad_label)
-  labelView?.setTextColor(palette.faint.hashCode())
+  label.setTextColor(p.faint.toArgb())
+  headline.setTextColor(p.ink.toArgb())
+  body.setTextColor(p.sub.toArgb())
+  cta.setTextColor(p.onInk.toArgb())
+  cta.backgroundTintList = ColorStateList.valueOf(p.ink.toArgb())
 
-  val headlineView = adView.findViewById<android.widget.TextView>(R.id.ad_headline)
-  headlineView?.setTextColor(palette.ink.hashCode())
+  headline.text = ad.headline
+  body.text = ad.body
+  body.visibility = if (ad.body == null) View.GONE else View.VISIBLE
+  icon.setImageDrawable(ad.icon?.drawable)
+  icon.visibility = if (ad.icon == null) View.GONE else View.VISIBLE
+  cta.text = ad.callToAction
+  cta.visibility = if (ad.callToAction == null) View.GONE else View.VISIBLE
 
-  val bodyView = adView.findViewById<android.widget.TextView>(R.id.ad_body)
-  bodyView?.setTextColor(palette.sub.hashCode())
-
-  val ctaView = adView.findViewById<android.widget.Button>(R.id.ad_call_to_action)
-  ctaView?.setTextColor(palette.onInk.hashCode())
-  ctaView?.setBackgroundColor(palette.ink.hashCode())
-}
-
-private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdViewAndroid, palette: Palette) {
-  adView.mediaView = adView.findViewById<MediaView>(R.id.ad_media)
-  adView.headlineView = adView.findViewById(R.id.ad_headline)
-  adView.bodyView = adView.findViewById(R.id.ad_body)
-  adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
-  adView.iconView = adView.findViewById(R.id.ad_app_icon)
-
-  (adView.headlineView as? android.widget.TextView)?.text = nativeAd.headline
-  (adView.bodyView as? android.widget.TextView)?.text = nativeAd.body
-  (adView.callToActionView as? android.widget.Button)?.text = nativeAd.callToAction
-
-  nativeAd.icon?.let { icon ->
-    (adView.iconView as? android.widget.ImageView)?.setImageDrawable(icon.drawable)
-  }
-
-  adView.setNativeAd(nativeAd)
+  view.headlineView = headline
+  view.bodyView = body
+  view.iconView = icon
+  view.callToActionView = cta
+  view.mediaView = view.findViewById(R.id.ad_media)
+  view.setNativeAd(ad)
 }

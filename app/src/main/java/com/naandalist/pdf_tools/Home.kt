@@ -203,7 +203,7 @@ private fun ToolGrid(items: List<Tool>, shared: Boolean = true, onOpen: (Tool) -
         if (pair.size == 1) Spacer(Modifier.weight(1f))
       }
       if (showAdAfter == rowIndex) {
-        NativeAdView(Modifier.fillMaxWidth())
+        NativeAdCard()
       }
     }
   }
