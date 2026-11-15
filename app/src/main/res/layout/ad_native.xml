@@ -54,15 +54,16 @@
     <com.google.android.gms.ads.nativead.MediaView
       android:id="@+id/ad_media"
       android:layout_width="match_parent"
-      android:layout_height="200dp"
-      android:layout_marginTop="12dp"
+      android:layout_height="80dp"
+      android:layout_marginTop="8dp"
       android:scaleType="fitCenter" />
 
     <Button
       android:id="@+id/ad_call_to_action"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="12dp" />
+      android:layout_marginTop="6dp"
+      android:textSize="12sp" />
 
   </LinearLayout>
 

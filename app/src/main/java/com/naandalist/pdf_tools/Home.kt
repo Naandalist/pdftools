@@ -203,8 +203,10 @@ private fun ToolGrid(items: List<Tool>, shared: Boolean = true, onOpen: (Tool) -
         if (pair.size == 1) Spacer(Modifier.weight(1f))
       }
       if (showAdAfter == rowIndex) {
-        Spacer(Modifier.height(2.dp))
-        NativeAdView(Modifier.fillMaxWidth().padding(horizontal = 8.dp))
+        Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+          NativeAdView(Modifier.weight(1f))
+          Spacer(Modifier.weight(1f))
+        }
       }
     }
   }

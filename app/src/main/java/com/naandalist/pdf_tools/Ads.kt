@@ -1,29 +1,38 @@
 package com.naandalist.pdf_tools
 
 import android.view.LayoutInflater
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdView
+import com.google.android.gms.ads.nativead.NativeAdView as NativeAdViewAndroid
 
 const val ADMOB_NATIVE_AD_UNIT = "ca-app-pub-1316297860279927/3715278401"
 
 @Composable
 fun NativeAdView(modifier: Modifier = Modifier) {
   val palette = LocalPalette.current
-  Box(modifier.fillMaxWidth().height(240.dp).padding(vertical = 8.dp)) {
+  val shape = RoundedCornerShape(Radius.group)
+  Box(
+    modifier
+      .fillMaxWidth()
+      .height(160.dp)
+      .clip(shape)
+      .background(palette.surface, shape)
+  ) {
     AndroidView(
       factory = { context ->
         val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.ad_native, null) as NativeAdView
+        inflater.inflate(R.layout.ad_native, null) as NativeAdViewAndroid
       },
       modifier = Modifier.fillMaxWidth(),
       update = { adView ->
@@ -45,7 +54,7 @@ fun NativeAdView(modifier: Modifier = Modifier) {
   }
 }
 
-private fun applyThemeColors(adView: NativeAdView, palette: Palette) {
+private fun applyThemeColors(adView: NativeAdViewAndroid, palette: Palette) {
   adView.setBackgroundColor(palette.surface.hashCode())
 
   val headlineView = adView.findViewById<android.widget.TextView>(R.id.ad_headline)
@@ -59,7 +68,7 @@ private fun applyThemeColors(adView: NativeAdView, palette: Palette) {
   ctaView?.setBackgroundColor(palette.ink.hashCode())
 }
 
-private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView, palette: Palette) {
+private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdViewAndroid, palette: Palette) {
   adView.mediaView = adView.findViewById<MediaView>(R.id.ad_media)
   adView.headlineView = adView.findViewById(R.id.ad_headline)
   adView.bodyView = adView.findViewById(R.id.ad_body)
