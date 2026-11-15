@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">PDF Tools</string>
+  <color name="window">#F3F6EF</color>
+  <!-- The Android 12+ launch screen: Lime behind the mark. -->
+  <color name="splash_lime">#FF84CC16</color>
+  <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+    <item name="android:windowBackground">@color/window</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
+    <item name="android:forceDarkAllowed">false</item>
+    <item name="android:windowSplashScreenBackground">@color/splash_lime</item>
+    <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+  </style>
+</resources>
