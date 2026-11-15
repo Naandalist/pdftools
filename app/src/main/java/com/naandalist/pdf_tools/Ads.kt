@@ -18,6 +18,7 @@ const val ADMOB_NATIVE_AD_UNIT = "ca-app-pub-1316297860279927/3715278401"
 
 @Composable
 fun NativeAdView(modifier: Modifier = Modifier) {
+  val palette = LocalPalette.current
   Box(modifier.fillMaxWidth().height(240.dp).padding(vertical = 8.dp)) {
     AndroidView(
       factory = { context ->
@@ -26,10 +27,11 @@ fun NativeAdView(modifier: Modifier = Modifier) {
       },
       modifier = Modifier.fillMaxWidth(),
       update = { adView ->
+        applyThemeColors(adView, palette)
         val adRequest = AdRequest.Builder().build()
         val adLoader = com.google.android.gms.ads.AdLoader.Builder(appContext, ADMOB_NATIVE_AD_UNIT)
           .forNativeAd { nativeAd ->
-            populateNativeAdView(nativeAd, adView)
+            populateNativeAdView(nativeAd, adView, palette)
           }
           .withAdListener(object : com.google.android.gms.ads.AdListener() {
             override fun onAdFailedToLoad(p0: com.google.android.gms.ads.LoadAdError) {
@@ -43,7 +45,21 @@ fun NativeAdView(modifier: Modifier = Modifier) {
   }
 }
 
-private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView) {
+private fun applyThemeColors(adView: NativeAdView, palette: Palette) {
+  adView.setBackgroundColor(palette.surface.hashCode())
+
+  val headlineView = adView.findViewById<android.widget.TextView>(R.id.ad_headline)
+  headlineView?.setTextColor(palette.ink.hashCode())
+
+  val bodyView = adView.findViewById<android.widget.TextView>(R.id.ad_body)
+  bodyView?.setTextColor(palette.sub.hashCode())
+
+  val ctaView = adView.findViewById<android.widget.Button>(R.id.ad_call_to_action)
+  ctaView?.setTextColor(palette.onInk.hashCode())
+  ctaView?.setBackgroundColor(palette.ink.hashCode())
+}
+
+private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView, palette: Palette) {
   adView.mediaView = adView.findViewById<MediaView>(R.id.ad_media)
   adView.headlineView = adView.findViewById(R.id.ad_headline)
   adView.bodyView = adView.findViewById(R.id.ad_body)
