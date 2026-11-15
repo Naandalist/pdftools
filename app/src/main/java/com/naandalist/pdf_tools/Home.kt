@@ -71,7 +71,6 @@ fun Home() {
     if (!searching) {
       Stagger(0) { Hero(files) { nav.scan() } }
       if (files.isNotEmpty()) Stagger(1) { RecentPanel(files.take(3)) { nav.show(Tab.Files) } }
-      Stagger(2) { NativeAdView() }
       Row(
         Modifier.padding(top = 22.dp).horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -99,11 +98,12 @@ fun Home() {
       Stagger(3) {
         Column {
           GroupLabel("Pinned · ${pinned.size}")
-          ToolGrid(pinned, shared = false) { nav.tool(it.id) } // the section below owns the flying art
+          ToolGrid(pinned, shared = false, onOpen = { nav.tool(it.id) }) // the section below owns the flying art
         }
       }
     }
 
+    var adShown = false
     SECTIONS.forEachIndexed { si, name ->
       if (!searching && section != -1 && section != si) return@forEachIndexed
       val items = tools.filter { it.section == si && (searching || it.id != "scan") }
@@ -111,7 +111,8 @@ fun Home() {
       Stagger(si + 4) {
         Column {
           GroupLabel("$name · ${items.size}")
-          ToolGrid(items) { nav.tool(it.id) }
+          ToolGrid(items, onOpen = { nav.tool(it.id) }, showAdAfter = if (!adShown && items.size >= 4) 1 else -1)
+          if (!adShown && items.size >= 4) adShown = true
         }
       }
     }
@@ -194,12 +195,16 @@ private fun Hero(files: List<Saved>, onScan: () -> Unit) {
 
 // Two cards a row, each the height of the taller one, so titles and descriptions line up across the grid.
 @Composable
-private fun ToolGrid(items: List<Tool>, shared: Boolean = true, onOpen: (Tool) -> Unit) {
+private fun ToolGrid(items: List<Tool>, shared: Boolean = true, onOpen: (Tool) -> Unit, showAdAfter: Int = -1) {
   Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-    items.chunked(2).forEach { pair ->
+    items.chunked(2).forEachIndexed { rowIndex, pair ->
       Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         pair.forEach { t -> ToolCard(t, Modifier.weight(1f), shared) { onOpen(t) } }
         if (pair.size == 1) Spacer(Modifier.weight(1f))
+      }
+      if (showAdAfter == rowIndex) {
+        Spacer(Modifier.height(2.dp))
+        NativeAdView(Modifier.fillMaxWidth().padding(horizontal = 8.dp))
       }
     }
   }

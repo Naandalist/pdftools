@@ -18,7 +18,7 @@ const val ADMOB_NATIVE_AD_UNIT = "ca-app-pub-1316297860279927/3715278401"
 
 @Composable
 fun NativeAdView(modifier: Modifier = Modifier) {
-  Box(modifier.fillMaxWidth().height(280.dp).padding(horizontal = 12.dp, vertical = 12.dp)) {
+  Box(modifier.fillMaxWidth().height(240.dp).padding(vertical = 8.dp)) {
     AndroidView(
       factory = { context ->
         val inflater = LayoutInflater.from(context)
