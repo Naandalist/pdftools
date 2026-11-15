@@ -77,12 +77,10 @@ private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdViewAndroid
   adView.bodyView = adView.findViewById(R.id.ad_body)
   adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
   adView.iconView = adView.findViewById(R.id.ad_app_icon)
-  adView.advertiserView = adView.findViewById(R.id.ad_advertiser)
 
   (adView.headlineView as? android.widget.TextView)?.text = nativeAd.headline
   (adView.bodyView as? android.widget.TextView)?.text = nativeAd.body
   (adView.callToActionView as? android.widget.Button)?.text = nativeAd.callToAction
-  (adView.advertiserView as? android.widget.TextView)?.text = nativeAd.advertiser
 
   nativeAd.icon?.let { icon ->
     (adView.iconView as? android.widget.ImageView)?.setImageDrawable(icon.drawable)
