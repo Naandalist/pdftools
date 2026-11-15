@@ -5,10 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -27,7 +25,7 @@ fun NativeAdView(modifier: Modifier = Modifier) {
   Box(
     modifier
       .fillMaxWidth()
-      .height(160.dp)
+      .height(200.dp)
       .clip(shape)
       .background(palette.surface, shape)
   ) {
@@ -53,12 +51,14 @@ fun NativeAdView(modifier: Modifier = Modifier) {
         adLoader.loadAd(adRequest)
       }
     )
-    T("Ads", Type.caption, palette.faint, Modifier.align(Alignment.TopStart).padding(12.dp))
   }
 }
 
 private fun applyThemeColors(adView: NativeAdViewAndroid, palette: Palette) {
   adView.setBackgroundColor(palette.surface.hashCode())
+
+  val labelView = adView.findViewById<android.widget.TextView>(R.id.ad_label)
+  labelView?.setTextColor(palette.faint.hashCode())
 
   val headlineView = adView.findViewById<android.widget.TextView>(R.id.ad_headline)
   headlineView?.setTextColor(palette.ink.hashCode())
