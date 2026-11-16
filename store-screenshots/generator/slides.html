@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PDF Tools store screenshots</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=block" rel="stylesheet">
+<style>
+  :root { --forest: #0e2b1f; --ink2: #3f6212; --lime: #84cc16; --cool: #d7efff; --sub: #4f5f53; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--forest); -webkit-font-smoothing: antialiased; }
+
+  .slide { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: linear-gradient(180deg, #f9fcf3 0%, #f1f8e6 46%, #e3f1cd 100%); }
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .blob.a { width: 620px; height: 620px; right: -260px; top: 520px; background: radial-gradient(circle, rgba(132, 204, 22, .26), rgba(132, 204, 22, 0) 70%); }
+  .blob.b { width: 760px; height: 760px; left: -330px; top: 980px; background: radial-gradient(circle, rgba(215, 239, 255, .95), rgba(215, 239, 255, 0) 70%); }
+  .blob.c { width: 900px; height: 900px; left: 90px; top: 1180px; background: radial-gradient(circle, rgba(132, 204, 22, .22), rgba(132, 204, 22, 0) 66%); }
+  .confetti { position: absolute; border-radius: 7px; }
+  .dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: rgba(14, 43, 31, .18); }
+
+  .head { position: absolute; left: 0; right: 0; top: 118px; text-align: center; padding: 0 70px; }
+  h1 { font-size: 92px; line-height: 1.07; font-weight: 800; letter-spacing: -2.5px; }
+  h1 .hl { color: var(--ink2); position: relative; display: inline-block; z-index: 0; }
+  h1 .hl::after { content: ""; position: absolute; left: -10px; right: -10px; bottom: 8px; height: 34px; border-radius: 10px;
+    background: rgba(132, 204, 22, .5); z-index: -1; }
+  .sub { margin: 30px auto 0; font-size: 33px; line-height: 1.45; font-weight: 500; color: var(--sub); max-width: 820px; }
+
+  .phone { position: absolute; left: 50%; width: 580px; transform: translateX(-50%); filter: drop-shadow(0 40px 50px rgba(14, 43, 31, .28)); }
+  .phone img { width: 100%; display: block; }
+
+  .chip { position: absolute; display: flex; align-items: center; gap: 16px; background: #fff; border-radius: 26px;
+    padding: 14px 26px 14px 14px; box-shadow: 0 2px 4px rgba(14, 43, 31, .06), 0 18px 40px -10px rgba(14, 43, 31, .28); z-index: 5; }
+  .chip .ic { width: 66px; height: 66px; border-radius: 19px; display: grid; place-items: center; flex: none; background: var(--lime); color: var(--forest); }
+  .chip.dark .ic { background: var(--forest); color: var(--lime); }
+  .chip.cool .ic { background: var(--cool); color: var(--forest); }
+  .chip .ic svg { width: 34px; height: 34px; }
+  .chip b { font-size: 29px; line-height: 1.12; font-weight: 700; white-space: nowrap; }
+
+  .foot { position: absolute; left: 0; right: 0; bottom: 62px; display: flex; align-items: center; justify-content: center; gap: 20px; }
+  .foot img { width: 82px; height: 82px; border-radius: 22px; box-shadow: 0 10px 24px -8px rgba(14, 43, 31, .35); }
+  .foot .name { font-size: 44px; font-weight: 800; letter-spacing: -1px; line-height: 1.05; }
+  .foot .tag { font-size: 25px; font-weight: 500; color: var(--sub); }
+
+  /* Finale: three phones fanned out */
+  /* Feature graphic, 1024x500 */
+  .fg { width: 1024px; height: 500px; }
+  .fg .blob.a { width: 520px; height: 520px; right: -140px; top: -120px; }
+  .fg .blob.b { width: 520px; height: 520px; left: -240px; top: 160px; }
+  .fg .blob.c { width: 620px; height: 620px; left: 520px; top: 180px; }
+  .fg .brand { position: absolute; left: 64px; top: 52px; display: flex; align-items: center; gap: 14px; }
+  .fg .brand img { width: 54px; height: 54px; border-radius: 15px; box-shadow: 0 8px 18px -6px rgba(14, 43, 31, .35); }
+  .fg .brand span { font-size: 30px; font-weight: 800; letter-spacing: -.6px; }
+  .fg h1 { position: absolute; left: 64px; top: 136px; font-size: 58px; line-height: 1.08; letter-spacing: -1.6px; text-align: left; }
+  .fg h1 .hl::after { bottom: 4px; height: 22px; border-radius: 7px; left: -6px; right: -6px; }
+  .fg .sub { position: absolute; left: 64px; top: 278px; margin: 0; font-size: 21px; max-width: 470px; text-align: left; }
+  .fg .pills { position: absolute; left: 64px; top: 372px; display: flex; gap: 14px; }
+  .fg .chip { position: static; padding: 9px 18px 9px 9px; border-radius: 18px; gap: 11px; }
+  .fg .chip .ic { width: 44px; height: 44px; border-radius: 13px; }
+  .fg .chip .ic svg { width: 23px; height: 23px; }
+  .fg .chip b { font-size: 19px; }
+  .fg .phone { transform: none; }
+  .fg .float { position: absolute; }
+
+  /* Overview strip, 3960x1400 */
+  .strip { width: 3960px; height: 1400px; }
+  .strip .blob.a { width: 1400px; height: 1400px; right: -400px; top: -500px; }
+  .strip .blob.b { width: 1600px; height: 1600px; left: -500px; top: 200px; }
+  .strip .blob.c { width: 1800px; height: 1800px; left: 1300px; top: 400px; }
+  .strip .card { position: absolute; top: 166px; width: 600px; height: 1067px; border-radius: 46px; overflow: hidden;
+    box-shadow: 0 4px 10px rgba(14, 43, 31, .06), 0 40px 70px -20px rgba(14, 43, 31, .35); }
+  .strip .card img { width: 100%; height: 100%; display: block; }
+
+  .fan .phone { width: 430px; }
+  .fan .phone.l { transform: translateX(-50%) translateX(-255px) rotate(-8deg); z-index: 1; }
+  .fan .phone.r { transform: translateX(-50%) translateX(255px) rotate(8deg); z-index: 1; }
+  .fan .phone.c { z-index: 2; width: 500px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const ICONS = {
+  scan: '<path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M7 12h10"/>',
+  merge: '<path d="M8 3H5a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM8 13H5a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zM13 7l3 5-3 5M16 12h5"/>',
+  pin: '<path d="M12 17v5M8 3h8l-1.5 6.5L18 13H6l3.5-3.5z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+  shrink: '<path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
+  type: '<path d="M4 7V4h16v3M9 20h6M12 4v16"/>',
+  stamp: '<path d="M5 22h14M19 18H5v-3a2 2 0 0 1 2-2h3l-1-4a3 3 0 1 1 6 0l-1 4h3a2 2 0 0 1 2 2z"/>',
+  opacity: '<circle cx="12" cy="12" r="9"/><path d="M12 3v18M12 7l5-2.4M12 12h8.6M12 17l5 2.4"/>',
+  folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v6M9 14h6"/>',
+  phone: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+  lock: '<rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+  wifioff: '<path d="M2 8.8a15 15 0 0 1 4.2-2.6M10.5 5.1A15 15 0 0 1 22 8.8M5 12.5a10 10 0 0 1 4-2.2M15.5 10.6a10 10 0 0 1 3.5 1.9M8.5 16a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/>',
+  ocr: '<path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M7 9h10M7 12h10M7 15h6"/>',
+  useroff: '<circle cx="10" cy="8" r="4"/><path d="M3 20c.8-3.4 3.6-5.5 7-5.5 1.3 0 2.5.3 3.5.8M16 16l5 5M21 16l-5 5"/>',
+  gift: '<path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7z"/>',
+  zap: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+};
+
+// y is where the chip's centre sits, as a fraction of the phone's height; side says which edge it hangs off.
+const SLIDES = [
+  { phone: 'home', h: ['Every PDF Tool,', 'One Free App'], sub: '24 tools and a document scanner that run right on your phone.',
+    chips: [
+      { t: 'Smart\nSearch', i: 'search', side: 'l', y: .175 },
+      { t: 'Scan\nDocuments', i: 'scan', side: 'r', y: .3, k: 'dark' },
+      { t: 'Merge\n& Split', i: 'merge', side: 'l', y: .6 },
+      { t: 'Pin Your\nFavourites', i: 'pin', side: 'r', y: .7, k: 'cool' },
+    ] },
+  { phone: 'compress', h: ['Shrink PDFs,', 'Keep Text Sharp'], sub: 'Compress by level, or squeeze a file under the size you need.',
+    chips: [
+      { t: 'Pick From\nAnywhere', i: 'file', side: 'l', y: .38, k: 'cool' },
+      { t: 'Fit Under\na Size', i: 'shrink', side: 'r', y: .55 },
+      { t: '3 Smart\nLevels', i: 'sliders', side: 'l', y: .66, k: 'dark' },
+      { t: 'Preview\nBefore Saving', i: 'eye', side: 'r', y: .82 },
+    ] },
+  { phone: 'watermark', h: ['Stamp, Sign', '& Protect'], sub: 'Watermarks, signatures, passwords and redaction for every page.',
+    chips: [
+      { t: 'Live Page\nPreview', i: 'eye', side: 'r', y: .58, k: 'dark' },
+      { t: 'Your Own\nText', i: 'type', side: 'l', y: .72 },
+      { t: 'Size &\nOpacity', i: 'opacity', side: 'r', y: .86, k: 'cool' },
+      { t: 'Password\nProtect', i: 'lock', side: 'l', y: .28 },
+    ] },
+  { phone: 'files', h: ['All Your Files,', 'Neatly Organised'], sub: 'Folders, search and quick sharing for every PDF you make.',
+    chips: [
+      { t: 'Phone\nPDFs Too', i: 'phone', side: 'r', y: .155, k: 'cool' },
+      { t: 'Find Any\nFile Fast', i: 'search', side: 'l', y: .215 },
+      { t: 'Create\nFolders', i: 'folder', side: 'r', y: .52, k: 'dark' },
+      { t: 'Share in\nOne Tap', i: 'share', side: 'l', y: .66 },
+    ] },
+  { phone: 'settings', h: ['Private', 'By Design'], sub: 'Every tool runs on your phone. Your documents never leave it.',
+    chips: [
+      { t: 'On-Device\nText Reading', i: 'ocr', side: 'l', y: .4, k: 'dark' },
+      { t: 'Files Stay\nOn Your Phone', i: 'shield', side: 'r', y: .54 },
+      { t: 'No Sign-Up\nNeeded', i: 'useroff', side: 'l', y: .6, k: 'cool' },
+      { t: 'Works\nOffline', i: 'wifioff', side: 'r', y: .66 },
+    ] },
+  { fan: ['compress', 'home', 'files'], h: ['24 Tools.', 'Zero Uploads.'], sub: 'Free, fast and private. Your pocket PDF toolkit.',
+    chips: [
+      { t: '100%\nFree', i: 'gift', side: 'l', y: .02, k: 'dark' },
+      { t: 'Works\nOffline', i: 'wifioff', side: 'r', y: .16 },
+      { t: 'Scanner\nBuilt In', i: 'scan', side: 'l', y: .83 },
+      { t: 'No Sign-Up\nNeeded', i: 'useroff', side: 'r', y: .89, k: 'cool' },
+    ] },
+];
+
+// Same confetti layout on every slide, mirrored on odd ones so neighbours don't look identical.
+const CONFETTI = [
+  { x: 74, y: 128, s: 30, r: 18, c: '#84cc16' }, { x: 962, y: 96, s: 26, r: -14, c: '#0e2b1f' },
+  { x: 54, y: 690, s: 22, r: 30, c: '#d7efff' }, { x: 990, y: 640, s: 24, r: 12, c: '#84cc16' },
+  { x: 120, y: 1420, s: 26, r: -20, c: '#0e2b1f' }, { x: 960, y: 1300, s: 30, r: 24, c: '#d7efff' },
+  { x: 88, y: 1660, s: 20, r: 40, c: '#84cc16' }, { x: 1000, y: 1610, s: 18, r: -30, c: '#84cc16' },
+];
+const DOTS = [[180, 560], [900, 470], [60, 1080], [1016, 1060], [206, 1720], [880, 1780]];
+
+const svg = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]}</svg>`;
+
+function render(i) {
+  const s = SLIDES[i];
+  const mirror = i % 2 === 1;
+  const el = document.createElement('div');
+  el.className = 'slide' + (s.fan ? ' fan' : '');
+  let html = '<div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>';
+  CONFETTI.forEach((c) => {
+    const x = mirror ? 1080 - c.x - c.s : c.x;
+    html += `<div class="confetti" style="left:${x}px;top:${c.y}px;width:${c.s}px;height:${c.s}px;background:${c.c};transform:rotate(${mirror ? -c.r : c.r}deg)"></div>`;
+  });
+  DOTS.forEach(([x, y]) => { html += `<div class="dot" style="left:${mirror ? 1080 - x : x}px;top:${y}px"></div>`; });
+  html += `<div class="head"><h1>${s.h[0]}<br><span class="hl">${s.h[1]}</span></h1><p class="sub">${s.sub}</p></div>`;
+
+  const top = s.fan ? 540 : 505;
+  const w = s.fan ? 500 : 580;
+  const ratio = 1815 / 862;
+  if (s.fan) {
+    const [l, c, r] = s.fan;
+    html += `<div class="phone l" style="top:${top + 110}px"><img src="phones/${l}.png"></div>`;
+    html += `<div class="phone r" style="top:${top + 110}px"><img src="phones/${r}.png"></div>`;
+    html += `<div class="phone c" style="top:${top}px"><img src="phones/${c}.png"></div>`;
+  } else {
+    html += `<div class="phone" style="top:${top}px"><img src="phones/${s.phone}.png"></div>`;
+  }
+  const ph = w * ratio;
+  const left = 540 - w / 2, right = 540 + w / 2;
+  const reach = s.fan ? 70 : 96;
+  s.chips.forEach((c) => {
+    const y = top + c.y * ph;
+    const pos = c.side === 'l' ? `right:${1080 - left - reach}px` : `left:${right - reach}px`;
+    html += `<div class="chip ${c.k || ''}" style="${pos};top:${y}px;transform:translateY(-50%)"><span class="ic">${svg(c.i)}</span><b>${c.t.replace('\n', '<br>')}</b></div>`;
+  });
+
+  html += `<div class="foot"><img src="icon.png" alt=""><div><div class="name">PDF Tools</div><div class="tag">Free PDF toolkit &amp; scanner</div></div></div>`;
+  el.innerHTML = html;
+  document.getElementById('root').replaceChildren(el);
+}
+
+function sizeTo(w, h) {
+  for (const el of [document.documentElement, document.body]) { el.style.width = w + 'px'; el.style.height = h + 'px'; }
+}
+
+const confettiAt = (list) => list.map(([x, y, s, r, c]) =>
+  `<div class="confetti" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;background:${c};transform:rotate(${r}deg);border-radius:${Math.round(s / 4)}px"></div>`).join('');
+
+function renderFeature() {
+  sizeTo(1024, 500);
+  const el = document.createElement('div');
+  el.className = 'slide fg';
+  el.innerHTML = '<div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>'
+    + confettiAt([[30, 30, 16, 20, '#84cc16'], [560, 40, 14, -16, '#0e2b1f'], [600, 440, 16, 28, '#d7efff'], [985, 450, 14, -24, '#84cc16'], [470, 120, 10, 10, '#84cc16']])
+    + `<div class="brand"><img src="icon.png" alt=""><span>PDF Tools</span></div>`
+    + `<h1>Every PDF Tool,<br><span class="hl">One Free App</span></h1>`
+    + `<p class="sub">24 tools and a document scanner that run right on your phone.</p>`
+    + `<div class="pills"><div class="chip"><span class="ic">${svg('wifioff')}</span><b>Works Offline</b></div>`
+    + `<div class="chip dark"><span class="ic">${svg('useroff')}</span><b>No Sign-Up</b></div></div>`
+    + `<div class="phone" style="left:808px;top:118px;width:250px;transform:rotate(9deg);filter:drop-shadow(0 20px 26px rgba(14,43,31,.25))"><img src="phones/compress.png"></div>`
+    + `<div class="phone" style="left:610px;top:58px;width:300px;transform:rotate(-4deg);z-index:2;filter:drop-shadow(0 24px 30px rgba(14,43,31,.3))"><img src="phones/home.png"></div>`
+    + `<div class="chip float" style="left:536px;top:196px;padding:9px 18px 9px 9px;border-radius:18px;gap:11px"><span class="ic" style="width:44px;height:44px;border-radius:13px">${svg('scan')}</span><b style="font-size:19px">Scan<br>Documents</b></div>`
+    + `<div class="chip float dark" style="left:842px;top:348px;padding:9px 18px 9px 9px;border-radius:18px;gap:11px"><span class="ic" style="width:44px;height:44px;border-radius:13px">${svg('shrink')}</span><b style="font-size:19px">Compress<br>& Merge</b></div>`;
+  document.getElementById('root').replaceChildren(el);
+}
+
+function renderStrip() {
+  sizeTo(3960, 1400);
+  const el = document.createElement('div');
+  el.className = 'slide strip';
+  const names = ['01-all-tools', '02-compress', '03-watermark', '04-files', '05-private', '06-overview'];
+  el.innerHTML = '<div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>'
+    + confettiAt([[40, 60, 34, 18, '#84cc16'], [1300, 70, 28, -14, '#0e2b1f'], [2610, 1300, 30, 24, '#d7efff'], [3880, 80, 30, -20, '#84cc16'], [700, 1320, 26, 30, '#0e2b1f'], [3300, 1310, 26, 12, '#84cc16']])
+    + names.map((n, i) => `<div class="card" style="left:${51 + i * 651}px"><img src="../play/${n}.png"></div>`).join('');
+  document.getElementById('root').replaceChildren(el);
+}
+
+const params = new URLSearchParams(location.search);
+if (params.get('mode') === 'feature') renderFeature();
+else if (params.get('mode') === 'strip') renderStrip();
+else render(Math.max(0, Math.min(SLIDES.length - 1, Number(params.get('slide') || 1) - 1)));
+</script>
+</body>
+</html>
