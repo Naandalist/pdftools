@@ -18,8 +18,9 @@ android {
     versionCode = 1
     versionName = "1.0.0"
     // OpenCV ships a native lib per ABI; one keeps the APK small. `-PallAbis` (the release workflow) builds an APK per
-    // ABI plus a universal one instead.
-    if (!project.hasProperty("allAbis")) ndk { abiFilters += "arm64-v8a" }
+    // ABI plus a universal one instead. An app bundle keeps every ABI: Play serves each phone only its own.
+    val bundling = gradle.startParameter.taskNames.any { it.contains("bundle", ignoreCase = true) }
+    if (!project.hasProperty("allAbis") && !bundling) ndk { abiFilters += "arm64-v8a" }
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
